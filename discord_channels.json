@@ -1,0 +1,41 @@
+{
+  "guild_id": 1560409010921017456,
+  "category_id": 1572379856023462082,
+  "radar_channel_id": 1572379857671819315,
+  "radar_message_id": 1572388436109692990,
+  "elo_channel_id": 1572379859013996644,
+  "elo_message_id": 1572388445576503431,
+  "history_channel_id": 1572379860339400804,
+  "history_message_ids": [
+    1572388463192576341,
+    1572388466078130267
+  ],
+  "known_defeat_hex_ids": [
+    "285a85e",
+    "285a711",
+    "2855569",
+    "28553d9",
+    "2855240",
+    "28551fe",
+    "28550a0",
+    "2855033",
+    "2854f45",
+    "2854f1e",
+    "2853b55",
+    "2853b35",
+    "2853a20",
+    "2853999",
+    "285388c"
+  ],
+  "stat_gato_channel_id": 1572388427457110067,
+  "stat_fuego_channel_id": 1572388428828377268,
+  "stat_gian_channel_id": 1572388430804029551,
+  "modes_chart_message_id": 1572388449112166451,
+  "global_channel_id": 1574103737000132648,
+  "final_uhc_channel_id": 1574103738317148172,
+  "cave_uhc_channel_id": 1574103739797606594,
+  "global_message_id": 1574103741853077667,
+  "final_uhc_message_id": 1574103745397268541,
+  "cave_uhc_message_id": 1574103748769489017,
+  "cave_defeats_message_id": 1574103751650840638
+}
