@@ -1,0 +1,54 @@
+name: La Caza del Gato — Monitor Cloud 24/7
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: caza-del-gato-live-sync
+  cancel-in-progress: false
+
+jobs:
+  live-monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Pillow for visual dashboards
+        run: pip install --quiet pillow
+
+      - name: Execute Real-Time Cloud Sync Loop (30s interval)
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        run: |
+          python cloud_sync_gato.py --loop-seconds 240 --interval 30 --force
+
+      - name: Persist updated ELO database & state
+        run: |
+          git config user.name "LaCazaDelGatoCloudBot"
+          git config user.email "bot@lacazadelgato.local"
+          git add gato_database.json discord_channels.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: sync live ELOs and match history from PvPRivals [skip ci]"
+            git pull --rebase origin main || true
+            git push origin main || true
+          fi
+
+      - name: Chain next real-time cloud cycle
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run caza_del_gato_live.yml --ref main || true
