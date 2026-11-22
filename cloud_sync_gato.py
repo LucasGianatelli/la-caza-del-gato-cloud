@@ -428,9 +428,14 @@ def run_sync_cycle(token: str, force_update: bool = False) -> bool:
         try:
             s_data = fetch_player_svelte_data(uname)
             if s_data and s_data.get("player"):
+                st_meta = s_data.get("statistics", {})
+                st_entries = st_meta.get("stats", {}).get("entries", [])
+                elo_preview = {e.get("enumName"): e.get("elo") for e in st_entries if isinstance(e, dict)}
+                print(f"  [LIVE PVPRIVALS] {uname}: online={s_data['player'].get('online')} season={st_meta.get('season')} elos={elo_preview}", flush=True)
                 changes_by_player[key] = update_player_in_db(db["players"][key], s_data)
                 fetched_any = True
             else:
+                print(f"  [!] s_data vacío para {uname}: keys={list(s_data.keys()) if isinstance(s_data, dict) else type(s_data)}", flush=True)
                 changes_by_player[key] = {"came_online": False, "new_activity": False, "elo_changed": False, "mode_changes": []}
         except Exception as e:
             print(f"[!] Aviso consultando PvPRivals ({uname}): {e}", flush=True)
